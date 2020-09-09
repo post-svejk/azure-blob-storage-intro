@@ -1,0 +1,37 @@
+@startuml Konsepter i Azure Blob Storage
+
+hide empty members
+
+class Account
+
+class Container {
+  name: String
+}
+
+class Blob
+
+Account "1" --> "*" Container
+
+Container "*" --> "*" Blob
+
+Blob <|-- "Block Blob" 
+Blob <|-- "Append Blob" 
+Blob <|-- "Page Blob" 
+
+class Property {
+  key: String
+  value: String
+}
+
+class Metadata {
+  key: String
+  value: String
+}
+
+
+Blob "1" --> "*" Property
+Container "1" --> "*" Property
+Blob "1" --> "*" Metadata
+Container "1" --> "*" Metadata
+
+@enduml

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Intro til Azure Blob Storage for Java-utviklere</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Intro til Azure Blob Storage for Java-utviklere
+
+.footnote[Sven-Jørgen Karlsen]
+---
+
+# Agenda
+
+1. Introduksjon
+2. Begreper
+3. Bruk
+3. Autorisering
+4. Avanserte egenskaper (preview)
+3. Referanser 
+3. Demo: plain Java-app som snakker med Azure Blob Storage
+
+---
+
+# Introduksjon
+* Motivasjon: 
+  * Bruk i Digipost
+  * Storage...
+
+---
+
+# Hva er Azure Blob Storage?
+
+* Microsofts løsning på "objektlager i skyen"
+* Optimalisert for massive mengder ustrukturerte data
+* Designet for store objekter/filer
+* REST-API med klientbiblioteker i de fleste språk, f.eks:
+  * Java
+  * Node.js
+  * Python
+
+
+---
+
+# Blob Storage-begreper 1
+
+<img src="http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/svekar/azure-blob-storate-intro/master/ressurser.puml" alt="Oversikt over Blob Storage-begreper" align="left" height="100%" width="100%" >
+
+---
+
+# Blob Storage-begreper 2
+
+* Storage Account: Blob Stores må tilhøre en konto. 
+  Kontoen fungerer som ett navnerom for data (kontonavnet blir del av API-endepunktet).
+* Container: Organiserer blobs, som en filsystemkatalog.
+  Ubegrenset mengde innefor en konto.
+* Blob:
+    *  Block blob: konstruert av blokker, som det er mulig å
+        håndtere individuelt. Maks. str: 4.75TB (190.7 i preview)
+    *  Append blob: Som block blobs, men optimaliser for append-operasjoner.
+        Brukes til logging/streaming av data.
+    *  Page blob: Random access files opptil 8 TB.
+
+  Ubegrenset antall innenfor en kontainer.
+
+---
+
+# Bruk
+
+* Azure-portalen
+* Rest API
+* Klientbiblioteker i mange språk, som Java, JS o.s.v.
+* CLI: `az`
+  * `$ az storage account ...`
+  * `$ az storage container ...`
+  * `$ as storage blob ...`
+* Storage Explorer 
+* Blobfuse: virtuell fs-driver for Linux, kan montere blob storage i filsystemet.
+* `azcopy` og andre batchverktøy
+
+---
+# Autorisering
+
+## Alternativer
+* Account key (risky, gir root access til kontoen)
+  * Connection String (endpunkt konkatenert med nøkkel)
+* Shared Access Signature (SAS): begrenset tilgang
+  * User delegation SAS (signert med Azure AD): foretrukket
+  * Account SAS (singert med account key)
+* Azure AD: best praksis, anbefalt av MS
+
+## RBAC-autorisering
+Autentisering med en principal (alle bortsett fra account key) krever
+RBAC-roller for å få lov til å gjøre noe i Blob Storage.
+Roller: Storage Blob Data Contributor|Reader|Delegator
+
+---
+# Avanserte egenskaper
+
+* Kryptering: Client-side, client-managed keys, infrastructure
+* WORM og "legal hold" policies
+* Blob versioning
+* Soft delete, for blobs og containere (preview for containere)
+* Snapshots 
+* Change feed
+* Point-in-time restore (preview)
+* Concurrency: optmistisk (via eTags) og pessimistisk (leases) låsing
+* Blob Index (preview)
+
+
+
+---
+
+ # Referanser
+
+ *  https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction
+   *  [Quickstart for Java](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-java)
+   *  [Samples for Java](https://docs.microsoft.com/en-us/azure/storage/common/storage-samples-java?toc=/azure/storage/blobs/toc.json)
+ *  https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-blob
+
+
+---
+# Demo
+Hopp til `README.md` i samme katalog som denne fila.
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+
+
+
+
+
+  </body>
+</html>
